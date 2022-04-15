@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IProject"
+            id="fr.loria.mosel.rodin.test.ui.menu.popup">
+         <menu
+               label="My Plugins"
+               path="additions"
+               id="fr.loria.mosel.rodin.test.ui.popup.menu">
+               <separator name="top"/> 
+         </menu>
+         <action
+               label="Print context names"
+               class="fr.loria.mosel.rodin.plugin.sample.action.DialogAction"
+               menubarPath="fr.loria.mosel.rodin.test.ui.popup.menu/top"
+               enablesFor="1"
+               id="fr.loria.mosel.rodin.test.ui.popup.menu.callgraph">
+         </action>  
+      </objectContribution>
+   </extension>
+</plugin>
