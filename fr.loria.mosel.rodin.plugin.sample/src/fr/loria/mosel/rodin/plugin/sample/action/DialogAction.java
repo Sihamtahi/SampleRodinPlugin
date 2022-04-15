@@ -3,6 +3,7 @@ package fr.loria.mosel.rodin.plugin.sample.action;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -10,7 +11,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eventb.core.IAxiom;
 import org.eventb.core.IContextRoot;
+import org.eventb.core.ast.FormulaFactory;
+import org.eventb.core.ast.IParseResult;
+import org.eventb.core.ast.ITypeEnvironment;
+import org.eventb.core.ast.Predicate;
 import org.rodinp.core.IInternalElement;
 import org.rodinp.core.IRodinDB;
 import org.rodinp.core.IRodinElement;
@@ -41,6 +47,22 @@ public class DialogAction implements IObjectActionDelegate{
 		return contexts;
 	}
 	
+	/*
+	 * Parse a string into a Predicate object 
+	 * according to type environment of the given context
+	 * */
+	public Predicate parsePredicate(IContextRoot ctx, String s) throws CoreException {
+		IParseResult result;
+		FormulaFactory ff = ctx.getFormulaFactory();
+		result = ff.parsePredicate(s, null);
+		Predicate expr = result.getParsedPredicate();
+		ITypeEnvironment env = ctx.getSCContextRoot().getTypeEnvironment();
+		
+		expr.typeCheck(env);
+		expr.getSyntaxTree();	
+		return expr;
+	}
+	
 	public void run(IAction action) {
 		
 		IRodinDB db = RodinCore.getRodinDB();
@@ -53,9 +75,18 @@ public class DialogAction implements IObjectActionDelegate{
 			try {
 			String s = "";
 			
-			// Iterate on the contexts within a rodin project
 			for(IContextRoot ctx : contexts(rodin)) {
 				s += ctx.getComponentName() + "\n";
+				
+				for(IAxiom axm : ctx.getAxioms()) {
+					String pred_ = axm.getPredicateString();
+					Predicate pred = parsePredicate(ctx, pred_);
+					s += "\t" + "axm name: " + axm.getLabel() + "\n";
+					s += "\t" + "ast tree: \n\t" + pred.getSyntaxTree().toString() + "\n";
+					
+					// TODO: process the AST
+					// See: org.eventb.core.ast.ISimpleVisitor
+				}
 			}
 			
 			MessageDialog.openInformation(shell, "Info", s);

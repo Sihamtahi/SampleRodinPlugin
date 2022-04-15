@@ -50,8 +50,8 @@ To run/test your plugin in the Rodin platform:
 
 3. A Rodin IDE, that includes your plugin, is then launching. For plugin testing, create Rodin projects and Event-B programs in here to setup your test cases.
 
-For example, our sample plugin prints the contexts name within a project. 
-* to setup a test case, create a sample Rodin project as usual, and create a context within it.
-* right click on the project you just created, click `My plugins > Print context names`
+For example, our sample plugin prints info of contexts within a project. 
+* to setup a test case, create a sample Rodin project as usual, and create a context within it, and create some constants and type them using axioms.
+* right click on the project you just created, click `My plugins > Print context`
 * A message dialog is then successfully popup, contains the queried information.
 
