@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eventb.core.ast,
  org.eclipse.ui,
  org.eventb.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8,
+ JavaSE-11
 Automatic-Module-Name: fr.loria.mosel.eventb.codegenerator.config.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: LORIA
